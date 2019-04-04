@@ -517,7 +517,7 @@ implements MetaModelValidatorRefiner, PostConstructMethodCache, ObjectSpecIdFace
                 }
 
                 final Map<ObjectSpecId, ObjectSpecification> specById = _Maps.newHashMap();
-                for (final ObjectSpecification otherSpec : getSpecificationLoader().allSpecifications()) {
+                for (final ObjectSpecification otherSpec : getSpecificationLoader().currentSpecifications()) {
 
                     if(thisSpec == otherSpec) {
                         continue;

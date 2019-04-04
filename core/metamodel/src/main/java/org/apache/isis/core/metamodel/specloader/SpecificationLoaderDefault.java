@@ -2,6 +2,7 @@ package org.apache.isis.core.metamodel.specloader;
 
 import static org.apache.isis.commons.internal.base._With.requires;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -285,7 +286,7 @@ public class SpecificationLoaderDefault implements SpecificationLoader {
 		}
 
 		//TODO[2033] don't block on long running code ... 'specSpi.introspectUpTo(upTo);'
-		synchronized (this) {
+		synchronized (cache) {
 			
 			spec = cache.get(typeName);
 			if (spec != null) {
@@ -308,8 +309,15 @@ public class SpecificationLoaderDefault implements SpecificationLoader {
 	// -- LOOKUP
 
 	@Override
-	public List<ObjectSpecification> allSpecifications() {
-		return _Lists.newArrayList(allCachedSpecifications());
+	public List<ObjectSpecification> currentSpecifications() {
+		
+		final List<ObjectSpecification> defensiveCopy;
+		
+		synchronized (cache) {
+			defensiveCopy = _Lists.newArrayList(allCachedSpecifications());
+		}
+		
+		return defensiveCopy;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class IncubatingSpecificationLoader implements SpecificationLoader {
 	}
 
 	@Override
-	public List<ObjectSpecification> allSpecifications() {
+	public List<ObjectSpecification> currentSpecifications() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -43,12 +43,6 @@ public class IncubatingSpecificationLoader implements SpecificationLoader {
 
 	@Override
 	public ObjectSpecification loadSpecification(Class<?> domainType, IntrospectionState upTo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ObjectSpecification loadSpecification(ObjectSpecId objectSpecId, IntrospectionState upTo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

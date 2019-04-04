@@ -17,13 +17,13 @@
 package org.apache.isis.core.metamodel.specloader;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
 import org.apache.isis.commons.internal.base._Strings;
 import org.apache.isis.config.property.ConfigPropertyBoolean;
 import org.apache.isis.config.property.ConfigPropertyEnum;
-import org.apache.isis.core.commons.exceptions.IsisException;
 import org.apache.isis.core.commons.lang.ClassUtil;
 import org.apache.isis.core.metamodel.spec.ObjectSpecId;
 import org.apache.isis.core.metamodel.spec.ObjectSpecification;
@@ -53,15 +53,16 @@ public interface SpecificationLoader {
     // -- LOOKUP
     
 	/**
-     * Returns (a new list holding a copy of) all the loaded specifications.
-     *
+	 * @ThreadSafe
      * <p>
-     *     A new list is returned to avoid concurrent modification exceptions for if the caller then
+     *     Must be implemented thread-safe to avoid concurrent modification exceptions for if the caller
      *     iterates over all the specifications and performs an activity that might give rise to new
      *     ObjectSpec's being discovered, eg performing metamodel validation.
      * </p>
+     * 
+     * @return snapshot of all the (currently) loaded specifications
      */
-	List<ObjectSpecification> allSpecifications();
+	List<ObjectSpecification> currentSpecifications();
 
 	ObjectSpecification lookupBySpecId(ObjectSpecId objectSpecId);
 	

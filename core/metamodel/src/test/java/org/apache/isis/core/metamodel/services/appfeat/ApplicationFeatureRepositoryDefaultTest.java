@@ -269,7 +269,7 @@ public class ApplicationFeatureRepositoryDefaultTest {
                 allowing(mockServiceRegistry).streamServices();
                 will(returnValue(_Lists.newArrayList().stream()));
 
-                allowing(mockSpecificationLoader).allSpecifications();
+                allowing(mockSpecificationLoader).currentSpecifications();
                 will(returnValue(_Lists.newArrayList()));
             }});
 
