@@ -17,15 +17,12 @@ import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.services.registry.ServiceRegistry;
 import org.apache.isis.applib.services.registry.ServiceRegistry.BeanAdapter;
 import org.apache.isis.commons.internal.base._NullSafe;
-import org.apache.isis.commons.internal.base._Strings;
 import org.apache.isis.commons.internal.collections._Lists;
 import org.apache.isis.commons.internal.context._Context;
 import org.apache.isis.commons.internal.debug._Probe;
 import org.apache.isis.config.IsisConfiguration;
 import org.apache.isis.config.internal._Config;
 import org.apache.isis.config.registry.IsisBeanTypeRegistry;
-import org.apache.isis.core.commons.exceptions.IsisException;
-import org.apache.isis.core.commons.lang.ClassUtil;
 import org.apache.isis.core.metamodel.MetaModelContext;
 import org.apache.isis.core.metamodel.facetapi.Facet;
 import org.apache.isis.core.metamodel.facets.object.objectspecid.ObjectSpecIdFacet;
@@ -242,34 +239,6 @@ public class SpecificationLoaderDefault implements SpecificationLoader {
 	}
 
 	@Override
-	public ObjectSpecification loadSpecification(
-			@Nullable final ObjectSpecId objectSpecId, 
-			final IntrospectionState upTo) {
-		
-		if(objectSpecId==null) {
-			return null;
-		}
-		
-		val className = objectSpecId.asString();
-		
-		if(_Strings.isNullOrEmpty(className)) {
-			return null;
-		}
-
-		try {
-			final Class<?> type = loadClassByName(className);
-			return loadSpecification(type, upTo);
-
-		} catch (final ClassNotFoundException e) {
-			final ObjectSpecification spec = cache.get(className); 
-			if (spec == null) {
-				throw new IsisException("No such class available: " + className);
-			}
-			return spec;
-		}
-	}
-
-	@Override
 	public ObjectSpecification loadSpecification(@Nullable final Class<?> type, final IntrospectionState upTo) {
 		
 		if(type==null) {
@@ -407,14 +376,6 @@ public class SpecificationLoaderDefault implements SpecificationLoader {
 			final NatureOfService fallback) {
 		final DomainService domainServiceIfAny = type.getAnnotation(DomainService.class);
 		return domainServiceIfAny != null ? domainServiceIfAny.nature() : fallback;
-	}
-
-	private Class<?> loadClassByName(final String className) throws ClassNotFoundException {
-		final Class<?> builtIn = ClassUtil.getBuiltIn(className);
-		if (builtIn != null) {
-			return builtIn;
-		}
-		return ClassUtil.forName(className);
 	}
 	
 	private final static _Probe probe = _Probe.unlimited().label("SpecificationLoader");

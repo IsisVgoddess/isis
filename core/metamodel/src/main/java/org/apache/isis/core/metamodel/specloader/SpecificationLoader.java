@@ -20,11 +20,16 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.apache.isis.commons.internal.base._Strings;
 import org.apache.isis.config.property.ConfigPropertyBoolean;
 import org.apache.isis.config.property.ConfigPropertyEnum;
+import org.apache.isis.core.commons.exceptions.IsisException;
+import org.apache.isis.core.commons.lang.ClassUtil;
 import org.apache.isis.core.metamodel.spec.ObjectSpecId;
 import org.apache.isis.core.metamodel.spec.ObjectSpecification;
 import org.apache.isis.core.metamodel.specloader.specimpl.IntrospectionState;
+
+import lombok.val;
 
 /**
  * Builds the meta-model.
@@ -86,7 +91,20 @@ public interface SpecificationLoader {
 	 * 
 	 * @return {@code null} if {@code objectSpecId==null} 
 	 */
-	ObjectSpecification loadSpecification(@Nullable ObjectSpecId objectSpecId, IntrospectionState upTo);
+	default ObjectSpecification loadSpecification(@Nullable ObjectSpecId objectSpecId, IntrospectionState upTo) {
+		if(objectSpecId==null) {
+			return null;
+		}
+		
+		val className = objectSpecId.asString();
+		
+		if(_Strings.isNullOrEmpty(className)) {
+			return null;
+		}
+		
+		final Class<?> type = ClassUtil.forNameElseFail(className);
+		return loadSpecification(type, upTo);
+	}
 	
 	// -- SHORTCUTS
 	

@@ -389,7 +389,7 @@ UiHintContainer {
 
     private static Class<?> forName(final ObjectSpecification objectSpec) {
         final String fullName = objectSpec.getFullIdentifier();
-        return ClassUtil.forName(fullName);
+        return ClassUtil.forNameElseFail(fullName);
     }
 
 
