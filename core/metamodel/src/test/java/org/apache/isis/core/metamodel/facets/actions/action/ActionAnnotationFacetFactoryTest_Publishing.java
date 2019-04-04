@@ -8,9 +8,9 @@ import java.lang.reflect.Method;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.SemanticsOf;
+import org.apache.isis.commons.internal.base._Blackhole;
 import org.apache.isis.core.metamodel.facetapi.Facet;
 import org.apache.isis.core.metamodel.facets.FacetFactory.ProcessMethodContext;
-import org.apache.isis.core.metamodel.facets.actions.action.ActionAnnotationFacetFactoryTest.SomeTransactionalId;
 import org.apache.isis.core.metamodel.facets.actions.action.publishing.PublishedActionFacetForActionAnnotation;
 import org.apache.isis.core.metamodel.facets.actions.action.publishing.PublishedActionFacetFromConfiguration;
 import org.apache.isis.core.metamodel.facets.actions.publish.PublishedActionFacet;
@@ -67,6 +67,7 @@ public class ActionAnnotationFacetFactoryTest_Publishing extends ActionAnnotatio
         final Facet facet = facetedMethod.getFacet(PublishedActionFacet.class);
         assertNotNull(facet);
         final PublishedActionFacetFromConfiguration facetImpl = (PublishedActionFacetFromConfiguration) facet;
+        _Blackhole.consume(facetImpl);
     }
 
     @Test(expected=IllegalStateException.class)
@@ -165,7 +166,8 @@ public class ActionAnnotationFacetFactoryTest_Publishing extends ActionAnnotatio
         final Facet facet = facetedMethod.getFacet(PublishedActionFacet.class);
         assertNotNull(facet);
         final PublishedActionFacetForActionAnnotation facetImpl = (PublishedActionFacetForActionAnnotation) facet;
-
+        _Blackhole.consume(facetImpl);
+        
         expectNoMethodsRemoved();
     }
 

@@ -26,8 +26,8 @@ import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.clock.Clock;
 import org.apache.isis.applib.events.domain.ActionDomainEvent;
 import org.apache.isis.applib.services.HasUniqueId;
-import org.apache.isis.applib.services.background.BackgroundCommandService;
-import org.apache.isis.applib.services.background.BackgroundService;
+import org.apache.isis.applib.services.background.CommandSchedulerService;
+import org.apache.isis.applib.services.background.BackgroundExecutionService;
 import org.apache.isis.applib.services.bookmark.Bookmark;
 import org.apache.isis.applib.services.bookmark.BookmarkService;
 import org.apache.isis.applib.services.iactn.Interaction;
@@ -57,7 +57,7 @@ import org.apache.isis.schema.cmd.v1.CommandDto;
  *     This is done by {@link #next(String)}.  There are three possible sequences that might be generated:
  *     the sequence of changed domain objects being published by the {@link org.apache.isis.applib.services.publish.PublisherService#publish(Interaction.Execution)}; the
  *     sequence of wrapped action invocations (each being published), and finally one or more background commands
- *     that might be scheduled via the {@link BackgroundService}.
+ *     that might be scheduled via the {@link BackgroundExecutionService}.
  * </p>
  *
  */
@@ -133,7 +133,7 @@ public interface Command extends HasUniqueId {
     /**
      * The mechanism by which this command is to be executed, either synchronously &quot;in the
      * {@link CommandExecuteIn#FOREGROUND foreground}&quot; or is to be executed asynchronously &quot;in the
-     * {@link CommandExecuteIn#BACKGROUND background}&quot; through the {@link BackgroundCommandService}.
+     * {@link CommandExecuteIn#BACKGROUND background}&quot; through the {@link CommandSchedulerService}.
      */
     CommandExecuteIn getExecuteIn();
 
@@ -158,7 +158,7 @@ public interface Command extends HasUniqueId {
      * The (current) executor of this command.
      *
      * <p>
-     * Note that (even for implementations of {@link BackgroundCommandService} that persist {@link Command}s), this
+     * Note that (even for implementations of {@link CommandSchedulerService} that persist {@link Command}s), this
      * property is never (likely to be) persisted, because it is always updated to indicate how the command is
      * currently being executed.
      *
@@ -212,7 +212,7 @@ public interface Command extends HasUniqueId {
     // -- parent (property)
 
     /**
-     * For actions created through the {@link BackgroundService} and {@link BackgroundCommandService},
+     * For actions created through the {@link BackgroundExecutionService} and {@link CommandSchedulerService},
      * captures the parent action.
      */
     Command getParent();
@@ -253,7 +253,7 @@ public interface Command extends HasUniqueId {
     // -- persistence (property)
 
     /**
-     * Whether this command should ultimately be persisted (if the configured {@link BackgroundCommandService} supports
+     * Whether this command should ultimately be persisted (if the configured {@link CommandSchedulerService} supports
      * it) or not.
      *
      * <p>
@@ -270,7 +270,7 @@ public interface Command extends HasUniqueId {
      * on whether {@link #setPersistHint(boolean) a hint has been set} by some other means.
      *
      * <p>
-     * For example, a {@link BackgroundCommandService} implementation that creates persisted background commands ought
+     * For example, a {@link CommandSchedulerService} implementation that creates persisted background commands ought
      * associate them (via its {@link Command#getParent() parent}) to an original persisted
      * {@link Command}.  The hinting mechanism allows the service to suggest that the parent command be persisted so
      * that the app can then provide a mechanism to find all child background commands for that original parent command.

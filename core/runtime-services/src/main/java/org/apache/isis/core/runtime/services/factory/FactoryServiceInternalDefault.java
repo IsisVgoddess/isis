@@ -53,12 +53,6 @@ public class FactoryServiceInternalDefault implements FactoryService {
     	return objectAdapterProvider.newTransientInstance(spec);
     }
 
-
-    @Override
-    public <T> T m(final Class<T> mixinClass, final Object mixedIn) {
-        return mixin(mixinClass, mixedIn);
-    }
-
     @Override
     public <T> T mixin(final Class<T> mixinClass, final Object mixedIn) {
         final ObjectSpecification objectSpec = specificationLoader.loadSpecification(mixinClass);

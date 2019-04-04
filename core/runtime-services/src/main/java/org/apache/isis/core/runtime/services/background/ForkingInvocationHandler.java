@@ -31,10 +31,13 @@ import org.apache.isis.core.runtime.system.session.IsisSessionFactory;
 import org.apache.isis.core.runtime.system.transaction.IsisTransaction;
 import org.apache.isis.core.security.authentication.AuthenticationSession;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Package private invocation handler that executes actions in the background using a ExecutorService
  * @since 2.0.0
  */
+@Slf4j
 class ForkingInvocationHandler<T> implements InvocationHandler {
 
     private final T target;
@@ -90,8 +93,7 @@ class ForkingInvocationHandler<T> implements InvocationHandler {
                         authSession	);
 
             } catch (Exception e) {
-                // log in caller's context
-                BackgroundServiceDefault.LOG.error(
+                log.error(
                         String.format("Background execution of action '%s' on object '%s' failed.",
                                 proxyMethod.getName(),
                                 domainObject.getClass().getName()),

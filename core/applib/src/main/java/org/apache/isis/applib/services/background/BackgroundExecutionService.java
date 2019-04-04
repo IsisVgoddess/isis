@@ -16,8 +16,6 @@
  */
 package org.apache.isis.applib.services.background;
 
-import org.apache.isis.applib.annotation.Programmatic;
-
 /**
  * Submit actions to be invoked in the background.
  *
@@ -26,32 +24,33 @@ import org.apache.isis.applib.annotation.Programmatic;
  * <pre>
  * public void submitInvoices() {
  *     for(Customer customer: customerRepository.findCustomersToInvoice()) {
- *         backgroundService.execute(customer).submitInvoice();
+ *         backgroundExecutionService.execute(customer).submitInvoice();
  *     }
  * }
  *
  * &#64;javax.inject.Inject
- * private BackgroundService backgroundService;
+ * private BackgroundExecutionService backgroundExecutionService;
  * </pre>
+ * 
+ * @since 2.0.0-M3 (renamed from 'BackgroundService')
+ * 
  */
-public interface BackgroundService {
+public interface BackgroundExecutionService {
 
     /**
      * Returns a proxy around the object (entity or view model) which is then used to obtain the
      * signature of the action to be invoked in the background.
      *
      * <p>
-     *     To obtain a proxy for a mixin, use {@link BackgroundService2#executeMixin(Class, Object)}.
+     *     To obtain a proxy for a mixin, use {@link BackgroundExecutionService#executeMixin(Class, Object)}.
      * </p>
      */
-    @Programmatic
     <T> T execute(final T object);
 
     /**
      * Returns a proxy around the mixin object which is then used to obtain the
      * signature of the action to be invoked in the background.
      */
-    @Programmatic
     <T> T executeMixin(Class<T> mixinClass, Object mixedIn);
 
 }

@@ -19,7 +19,6 @@
 
 package org.apache.isis.applib.services.factory;
 
-import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
 public interface FactoryService {
@@ -52,14 +51,12 @@ public interface FactoryService {
      * method.
      * </p>
      */
-    @Programmatic
     <T> T instantiate(Class<T> domainClass);
 
-
-    @Programmatic
     <T> T mixin(Class<T> mixinClass, Object mixedIn);
 
-    @Programmatic
-    <T> T m(Class<T> mixinClass, Object mixedIn);
+    default <T> T m(Class<T> mixinClass, Object mixedIn) {
+    	return mixin(mixinClass, mixedIn);
+    }
 
 }

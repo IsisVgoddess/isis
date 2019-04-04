@@ -30,8 +30,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.services.background.BackgroundCommandService;
-import org.apache.isis.applib.services.background.BackgroundService;
+import org.apache.isis.applib.services.background.CommandSchedulerService;
+import org.apache.isis.applib.services.background.BackgroundExecutionService;
 import org.apache.isis.applib.services.command.CommandContext;
 import org.apache.isis.applib.services.factory.FactoryService;
 import org.apache.isis.commons.internal._Constants;
@@ -41,18 +41,14 @@ import org.apache.isis.core.metamodel.spec.ObjectSpecification;
 import org.apache.isis.core.metamodel.specloader.SpecificationLoader;
 import org.apache.isis.core.metamodel.specloader.classsubstitutor.ProxyEnhanced;
 import org.apache.isis.core.plugins.codegen.ProxyFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * For command-reification depends on an implementation of
- * {@link org.apache.isis.applib.services.background.BackgroundCommandService} to
+ * {@link org.apache.isis.applib.services.background.CommandSchedulerService} to
  * be configured.
  */
 @Singleton
-public class BackgroundServiceDefault implements BackgroundService {
-
-    static final Logger LOG = LoggerFactory.getLogger(BackgroundServiceDefault.class);
+public class BackgroundServiceDefault implements BackgroundExecutionService {
 
     // only used if there is no BackgroundCommandService
     static class BuiltinExecutor {
@@ -172,7 +168,7 @@ public class BackgroundServiceDefault implements BackgroundService {
 
     // //////////////////////////////////////
 
-    @Inject @Any private Instance<BackgroundCommandService> backgroundCommandServices;
+    @Inject @Any private Instance<CommandSchedulerService> backgroundCommandServices;
     @Inject private CommandDtoServiceInternal commandDtoServiceInternal;
     @Inject private CommandContext commandContext;
     @Inject private FactoryService factoryService;

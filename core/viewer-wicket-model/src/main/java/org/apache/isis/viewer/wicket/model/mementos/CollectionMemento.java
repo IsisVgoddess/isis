@@ -30,8 +30,8 @@ import org.apache.isis.core.runtime.system.context.IsisContext;
 import lombok.val;
 
 /**
- * {@link Serializable} representation of a {@link OneToManyAssociation} (a
- * parented collection of entities).
+ * {@link Serializable} representation of a {@link OneToManyAssociation} 
+ * (a parented collection of entities).
  */
 public class CollectionMemento implements Serializable {
 
@@ -41,7 +41,8 @@ public class CollectionMemento implements Serializable {
             final OneToManyAssociation association) {
     	
         val specificationLoader = IsisContext.getSpecificationLoader();
-        return specificationLoader.loadSpecification(association.getIdentifier().toClassIdentityString());
+        return specificationLoader.loadSpecification(
+        		ObjectSpecId.of(association.getIdentifier().toClassIdentityString()));
     }
 
     private final ObjectSpecId owningType;

@@ -16,13 +16,15 @@
  */
 package org.apache.isis.applib.services.command;
 
+import java.util.function.Supplier;
+
 import javax.enterprise.context.RequestScoped;
 
 /**
- * This service (API and implementation) provides access to context information about any {@link Command}.
+ * Holds the request scoped top level {@link Command}.
  */
 @RequestScoped
-public class CommandContext {
+public class CommandContext implements Supplier<Command> {
 
     private Command command;
 
@@ -36,5 +38,10 @@ public class CommandContext {
     public void setCommand(final Command command) {
         this.command = command;
     }
+
+	@Override
+	public Command get() {
+		return getCommand();
+	}
 
 }

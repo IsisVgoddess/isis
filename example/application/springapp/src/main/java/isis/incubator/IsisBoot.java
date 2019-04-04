@@ -28,6 +28,7 @@ import springapp.boot.web.SpringAppManifest;
 @Configuration 
 @ComponentScan(
 		basePackageClasses= {
+				IsisIncubatorModule.class,
 				IsisApplibModule.class,
 				MetamodelModule.class,
 				RuntimeModule.class,

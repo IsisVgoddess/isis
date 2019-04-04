@@ -87,11 +87,11 @@ public class MetaModelServiceDefault implements MetaModelService {
 
     @Override
     public void rebuild(final Class<?> domainType) {
-        specificationLoader.invalidateCache(domainType);
         
         GridService gridService = _CDI.getSingletonElseFail(GridService.class);
         gridService.remove(domainType);
-        specificationLoader.loadSpecification(domainType);
+        
+        specificationLoader.reloadSpecification(domainType);
     }
 
     // //////////////////////////////////////

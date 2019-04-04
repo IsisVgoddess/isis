@@ -622,8 +622,6 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
     }
 
 
-    private static ThreadLocal<Boolean> invalidatingCache = ThreadLocal.withInitial(() -> Boolean.FALSE);
-
     @Override
     public ObjectMember getMember(final String memberId) {
         introspectUpTo(IntrospectionState.TYPE_AND_MEMBERS_INTROSPECTED);
@@ -638,6 +636,9 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
         }
         return null;
     }
+
+  //TODO [2033] remove or replace        
+//    private static ThreadLocal<Boolean> invalidatingCache = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
 
     /**
@@ -662,27 +663,28 @@ public abstract class ObjectSpecificationAbstract extends FacetHolderImpl implem
         if(oa != null) {
             return oa;
         }
-        if(_Context.isPrototyping()) {
-            // automatically refresh if not in production
-            // (better support for jrebel)
-
-            LOG.warn("Could not find association with id '{}'; invalidating cache automatically", id);
-            if(!invalidatingCache.get()) {
-                // make sure don't go into an infinite loop, though.
-                try {
-                    invalidatingCache.set(true);
-                    getSpecificationLoader().invalidateCache(getCorrespondingClass());
-                } finally {
-                    invalidatingCache.set(false);
-                }
-            } else {
-                LOG.warn("... already invalidating cache earlier in stacktrace, so skipped this time");
-            }
-            oa = getAssociationWithId(id);
-            if(oa != null) {
-                return oa;
-            }
-        }
+//TODO [2033] remove or replace        
+//        if(_Context.isPrototyping()) {
+//            // automatically refresh if not in production
+//            // (better support for jrebel)
+//
+//            LOG.warn("Could not find association with id '{}'; invalidating cache automatically", id);
+//            if(!invalidatingCache.get()) {
+//                // make sure don't go into an infinite loop, though.
+//                try {
+//                    invalidatingCache.set(true);
+//                    getSpecificationLoader().invalidateCache(getCorrespondingClass());
+//                } finally {
+//                    invalidatingCache.set(false);
+//                }
+//            } else {
+//                LOG.warn("... already invalidating cache earlier in stacktrace, so skipped this time");
+//            }
+//            oa = getAssociationWithId(id);
+//            if(oa != null) {
+//                return oa;
+//            }
+//        }
         throw new ObjectSpecificationException(
                 String.format("No association called '%s' in '%s'", id, getSingularName()));
     }

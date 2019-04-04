@@ -20,23 +20,19 @@ import org.apache.isis.applib.services.command.Command;
 import org.apache.isis.schema.cmd.v1.CommandDto;
 
 /**
- * Persists a {@link org.apache.isis.schema.cmd.v1.CommandDto command-reified} action such that it can be executed asynchronously,
+ * Persists a {@link org.apache.isis.schema.cmd.v1.CommandDto command-reified} 
+ * action such that it can be executed asynchronously,
  * for example through a Quartz scheduler.
  *
  * <p>
- * Separate from {@link BackgroundService} primarily so that the default
+ * Separate from {@link BackgroundExecutionService} primarily so that the default
  * implementation, <tt>BackgroundServiceDefault</tt> (in <tt>isis-module-background</tt>) can
  * delegate to different implementations of this service.
  *
- * <p>
- * There is currently only implementation of this service, <tt>BackgroundCommandServiceJdo</tt> in
- * <tt>o.a.i.module:isis-module-command-jdo</tt>.  That implementation has no UI and no side-effects (the programmatic
- * API is through {@link org.apache.isis.applib.services.background.BackgroundService}).  It is therefore
- * annotated with {@link org.apache.isis.applib.annotation.DomainService} so that it is automatically registered as
- * a service.
+ * @since 2.0.0-M3 (renamed from 'BackgroundCommandService')
  *
  */
-public interface BackgroundCommandService {
+public interface CommandSchedulerService {
 
     public void schedule(
             final CommandDto dto,

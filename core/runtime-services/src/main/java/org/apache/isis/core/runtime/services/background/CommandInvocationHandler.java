@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import org.apache.isis.applib.services.background.BackgroundCommandService;
+import org.apache.isis.applib.services.background.CommandSchedulerService;
 import org.apache.isis.applib.services.command.Command;
 import org.apache.isis.applib.services.command.CommandContext;
 import org.apache.isis.core.metamodel.MetaModelContext;
@@ -44,7 +44,7 @@ import org.apache.isis.schema.cmd.v1.CommandDto;
 
 class CommandInvocationHandler<T> implements InvocationHandler {
 
-    private final BackgroundCommandService backgroundCommandService;
+    private final CommandSchedulerService backgroundCommandService;
     private final T target;
     private final Object mixedInIfAny;
     private final SpecificationLoader specificationLoader;
@@ -53,7 +53,7 @@ class CommandInvocationHandler<T> implements InvocationHandler {
     private final Supplier<ObjectAdapterProvider> adapterProviderSupplier;
 
     CommandInvocationHandler(
-            BackgroundCommandService backgroundCommandService,
+            CommandSchedulerService backgroundCommandService,
             T target,
             Object mixedInIfAny,
             SpecificationLoader specificationLoader,

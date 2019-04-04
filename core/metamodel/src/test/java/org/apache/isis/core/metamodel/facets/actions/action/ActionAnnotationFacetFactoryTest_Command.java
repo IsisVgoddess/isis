@@ -15,7 +15,6 @@ import org.apache.isis.applib.annotation.CommandReification;
 import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.core.metamodel.facetapi.Facet;
 import org.apache.isis.core.metamodel.facets.FacetFactory.ProcessMethodContext;
-import org.apache.isis.core.metamodel.facets.actions.action.ActionAnnotationFacetFactoryTest.SomeTransactionalId;
 import org.apache.isis.core.metamodel.facets.actions.action.command.CommandFacetForActionAnnotation;
 import org.apache.isis.core.metamodel.facets.actions.action.command.CommandFacetForActionAnnotationAsConfigured;
 import org.apache.isis.core.metamodel.facets.actions.action.command.CommandFacetFromConfiguration;
@@ -74,7 +73,7 @@ public class ActionAnnotationFacetFactoryTest_Command extends ActionAnnotationFa
         // then
         final Facet facet = facetedMethod.getFacet(CommandFacet.class);
         assertNotNull(facet);
-        assert(facet instanceof  CommandFacetFromConfiguration);
+        assertTrue(facet instanceof  CommandFacetFromConfiguration);
         final CommandFacetFromConfiguration facetImpl = (CommandFacetFromConfiguration) facet;
         assertThat(facetImpl.persistence(), is(org.apache.isis.applib.annotation.CommandPersistence.PERSISTED));
         assertThat(facetImpl.executeIn(), is(org.apache.isis.applib.annotation.CommandExecuteIn.FOREGROUND));
@@ -130,9 +129,7 @@ public class ActionAnnotationFacetFactoryTest_Command extends ActionAnnotationFa
     public void given_asConfigured_and_configurationSetToIgnoreQueryOnly_andSafeSemantics_thenNone() {
 
         class Customer {
-            @Action(
-                    command = CommandReification.AS_CONFIGURED
-            )
+            @Action(command = CommandReification.AS_CONFIGURED)
             public void someAction() {
             }
         }
@@ -182,9 +179,7 @@ public class ActionAnnotationFacetFactoryTest_Command extends ActionAnnotationFa
     public void given_asConfigured_and_configurationSetToIgnoreQueryOnly_andNoSemantics_thenException() {
 
         class Customer {
-            @Action(
-                    command = CommandReification.AS_CONFIGURED
-            )
+            @Action(command = CommandReification.AS_CONFIGURED)
             public void someAction() {
             }
         }
@@ -199,9 +194,7 @@ public class ActionAnnotationFacetFactoryTest_Command extends ActionAnnotationFa
     public void given_asConfigured_and_configurationSetToNone_thenNone() {
 
         class Customer {
-            @Action(
-                    command = CommandReification.AS_CONFIGURED
-            )
+            @Action(command = CommandReification.AS_CONFIGURED)
             public void someAction() {
             }
         }
@@ -248,9 +241,7 @@ public class ActionAnnotationFacetFactoryTest_Command extends ActionAnnotationFa
 
         // given
         class Customer {
-            @Action(
-                    command = CommandReification.ENABLED
-            )
+            @Action(command = CommandReification.ENABLED)
             public void someAction() {
             }
         }
@@ -273,9 +264,7 @@ public class ActionAnnotationFacetFactoryTest_Command extends ActionAnnotationFa
 
         // given
         class Customer {
-            @Action(
-                    command = CommandReification.DISABLED
-            )
+            @Action(command = CommandReification.DISABLED)
             public void someAction() {
             }
         }

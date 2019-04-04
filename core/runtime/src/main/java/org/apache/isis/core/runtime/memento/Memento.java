@@ -34,6 +34,7 @@ import org.apache.isis.core.metamodel.facets.collections.modify.CollectionFacet;
 import org.apache.isis.core.metamodel.facets.object.encodeable.EncodableFacet;
 import org.apache.isis.core.metamodel.facets.propcoll.accessor.PropertyOrCollectionAccessorFacet;
 import org.apache.isis.core.metamodel.facets.properties.update.modify.PropertySetterFacet;
+import org.apache.isis.core.metamodel.spec.ObjectSpecId;
 import org.apache.isis.core.metamodel.spec.ObjectSpecification;
 import org.apache.isis.core.metamodel.spec.feature.Contributed;
 import org.apache.isis.core.metamodel.spec.feature.ObjectAssociation;
@@ -193,7 +194,7 @@ public class Memento implements Serializable {
             return null;
         }
         final ObjectSpecification spec =
-                getSpecificationLoader().loadSpecification(data.getClassName());
+                getSpecificationLoader().loadSpecification(ObjectSpecId.of(data.getClassName()));
         
         final Oid oid = getOid();
 

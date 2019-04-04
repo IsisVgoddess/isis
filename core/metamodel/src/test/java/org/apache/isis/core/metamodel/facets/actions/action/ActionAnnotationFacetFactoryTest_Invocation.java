@@ -25,7 +25,8 @@ public class ActionAnnotationFacetFactoryTest_Invocation extends ActionAnnotatio
 
         class Customer {
 
-			class SomeActionInvokedDomainEvent extends ActionDomainEvent<Customer> { }
+			class SomeActionInvokedDomainEvent extends ActionDomainEvent<Customer> {
+				private static final long serialVersionUID = 1L; }
 
             @Action(domainEvent = SomeActionInvokedDomainEvent.class)
             public void someAction() {
@@ -66,7 +67,8 @@ public class ActionAnnotationFacetFactoryTest_Invocation extends ActionAnnotatio
 
         class Customer {
 
-            class SomeActionInvokedDomainEvent extends ActionDomainEvent<Customer> { }
+            class SomeActionInvokedDomainEvent extends ActionDomainEvent<Customer> {
+				private static final long serialVersionUID = 1L; }
 
             @Action(domainEvent = SomeActionInvokedDomainEvent.class)
             public void someAction() {
@@ -109,7 +111,7 @@ public class ActionAnnotationFacetFactoryTest_Invocation extends ActionAnnotatio
         class Customer {
 
             class SomeActionInvokedDomainEvent extends ActionDomainEvent<Customer> {
-            }
+            	private static final long serialVersionUID = 1L; }
 
             @Action(domainEvent= SomeActionInvokedDomainEvent.class)
             public void someAction() {
