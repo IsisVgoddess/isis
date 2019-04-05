@@ -17,7 +17,6 @@
 package org.apache.isis.core.metamodel.specloader;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 

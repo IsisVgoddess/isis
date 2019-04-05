@@ -20,7 +20,8 @@ import springapp.dom.customer.Customer;
 
 @DomainObject(nature=Nature.EXTERNAL_ENTITY)
 @Entity 
-@NoArgsConstructor(access = AccessLevel.PROTECTED) @RequiredArgsConstructor @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @RequiredArgsConstructor 
+@ToString(exclude = {"customer"})
 public class Email {
 
     @Id
@@ -37,13 +38,6 @@ public class Email {
 
     @Getter @Setter 
     private boolean verified;
-    
-    // -- BUSINESS LOGIC
-
-	public void startVerificationProcess() {
-		
-		System.out.println("startVerificationProcess for " + this);
-	}
    
     
 }

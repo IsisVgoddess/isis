@@ -2,7 +2,6 @@ package org.apache.isis.core.metamodel.specloader;
 
 import static org.apache.isis.commons.internal.base._With.requires;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;

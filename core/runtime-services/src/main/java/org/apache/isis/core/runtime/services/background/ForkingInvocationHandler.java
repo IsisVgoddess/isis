@@ -42,15 +42,15 @@ class ForkingInvocationHandler<T> implements InvocationHandler {
 
     private final T target;
     private final Object mixedInIfAny;
-    private final ExecutorService backgroundExecutorService;
+    private final ExecutorService executorService;
 
     ForkingInvocationHandler(
             T target,
             Object mixedInIfAny,
-            ExecutorService backgroundExecutorService ) {
+            ExecutorService executorService ) {
         this.target = requires(target, "target");
         this.mixedInIfAny = mixedInIfAny;
-        this.backgroundExecutorService = requires(backgroundExecutorService, "backgroundExecutorService");
+        this.executorService = requires(executorService, "executorService");
     }
 
     @Override
@@ -83,7 +83,7 @@ class ForkingInvocationHandler<T> implements InvocationHandler {
                 .map(IsisTransaction::countDownLatch)
                 .orElse(new CountDownLatch(0));
 
-        backgroundExecutorService.submit(()->{
+        executorService.submit(()->{
 
             try {
                 countDownLatch.await(); // wait for current transaction of the calling thread to complete

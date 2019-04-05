@@ -2,11 +2,12 @@ package isis.incubator.command;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 import org.apache.isis.applib.services.background.CommandSchedulerService;
 import org.apache.isis.applib.services.command.Command;
-import org.apache.isis.core.metamodel.adapter.ObjectAdapterProvider;
+import org.apache.isis.commons.internal.debug._Probe;
 import org.apache.isis.core.metamodel.services.command.CommandDtoServiceInternal;
 import org.apache.isis.core.metamodel.specloader.SpecificationLoader;
 
@@ -22,10 +23,14 @@ class IncubatingCommandInvocationHandler<T> implements InvocationHandler {
     @NonNull private final SpecificationLoader specificationLoader;
     @NonNull private final CommandDtoServiceInternal commandDtoServiceInternal;
     @NonNull private final Supplier<Command> toplevelCommandSupplier;
-    @NonNull private final Supplier<ObjectAdapterProvider> adapterProviderSupplier;
+//    @NonNull private final Supplier<ObjectAdapterProvider> adapterProviderSupplier;
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		
+		_Probe.errOut("invoke not implemented: proxy='%s', method='%s', args='%s'",
+				proxy.getClass(), method.getName(), ""+Arrays.asList(args));
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
