@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import javax.inject.Inject;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -46,8 +47,8 @@ class CommandTest {
 		commandDemoBean.cleanup();
 	}
 
-	@Test
-	void shouldProperlyCountVerifiedEmails_not_verified() {
+	@Test @Order(1)
+	void countEmails_not_verified() {
 
 		commandDemoBean.setUp();
 		
@@ -62,8 +63,8 @@ class CommandTest {
 			
 	}
 	
-	@Test
-	void shouldProperlyCountVerifiedEmails_verified() {
+	@Test @Order(2)
+	void countEmails_verified() {
 
 		commandDemoBean.setUpVerified();
 		
@@ -78,8 +79,35 @@ class CommandTest {
 			
 	}
 	
-	@Test
-	void shouldAllowTaskCancellation() {
+	@Test @Order(3)
+	void emailVerification_sync() {
+
+		commandDemoBean.setUp();
+		
+		for(Email email: emailRepository.findByVerified(false)) {
+			
+			// we want this to run within its own transaction
+			// 'emailVerificationService' is managed by Spring, so the invocation honors any 
+			// @Transactional annotation present on the method that gets invoked.
+			emailVerificationService.startVerificationProcess(email);
+			
+			//backgroundService.execute(email).startVerificationProcess();
+		}
+		
+		{
+			val verifiedCount = emailRepository.countByVerified(true);
+			val notVerifiedCount = emailRepository.countByVerified(false);
+			System.out.println("verified: " + verifiedCount);
+			System.out.println("not verified: " + notVerifiedCount);
+			
+			assertEquals(1, verifiedCount);
+			assertEquals(0, notVerifiedCount);
+		}
+		
+	}
+	
+	@Test @Order(4)
+	void emailVerification_async() {
 
 		commandDemoBean.setUp();
 		
@@ -118,32 +146,7 @@ class CommandTest {
 		
 	}
 	
-	@Test
-	void emailVerificationNonAsync() {
 
-		commandDemoBean.setUp();
-		
-		for(Email email: emailRepository.findByVerified(false)) {
-			
-			// we want this to run within its own transaction and in the background (async)
-			// 'emailVerificationService' is managed by Spring, so the invocation honors any 
-			// @Transactional and @Async annotation present on the method that gets invoked.
-			emailVerificationService.startVerificationProcess(email);
-			
-			//backgroundService.execute(email).startVerificationProcess();
-		}
-		
-		{
-			val verifiedCount = emailRepository.countByVerified(true);
-			val notVerifiedCount = emailRepository.countByVerified(false);
-			System.out.println("verified: " + verifiedCount);
-			System.out.println("not verified: " + notVerifiedCount);
-			
-			assertEquals(1, verifiedCount);
-			assertEquals(0, notVerifiedCount);
-		}
-		
-	}
 	
 
 

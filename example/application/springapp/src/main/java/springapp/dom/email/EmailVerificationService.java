@@ -2,32 +2,44 @@ package springapp.dom.email;
 
 import java.util.concurrent.CompletableFuture;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.val;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Service @Slf4j
 public class EmailVerificationService {
+	
+	//TODO #boilerplate
+    @Setter(onMethod = @__({@PersistenceContext})) private EntityManager em;
 
     // -- BUSINESS LOGIC
 	
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void startVerificationProcess(Email email) {
 		
 		log.info("start process for {}", toInfo(email));
 		
+		// we probably want 'email' passed over by the caller to be 'attached', but its 'detached'
+		email = em.merge(email); //TODO #boilerplate
+		
 		email.setVerified(true);
+		
+		// why is the 'commit' not handled by the current transaction?
+		em.persist(email); 	//TODO #boilerplate
 		
 		log.info("end process for {}", toInfo(email));
 	}
 	
 
-	@Async @Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Async @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public CompletableFuture<Void> startVerificationProcessAsync(Email email) {
 		
 		log.info("start process for {}", toInfo(email));
@@ -38,7 +50,13 @@ public class EmailVerificationService {
 			e.printStackTrace();
 		}
 		
+		// we probably want 'email' passed over by the caller to be 'attached', but its 'detached'
+		email = em.merge(email); //TODO #boilerplate
+		
 		email.setVerified(true);
+		
+		// why is the 'commit' not handled by the current transaction?
+		em.persist(email); 	//TODO #boilerplate
 		
 		log.info("end process for {}", toInfo(email));
 		
@@ -48,16 +66,10 @@ public class EmailVerificationService {
 	// -- HELPER
 	
 	private String toInfo(Email email) {
-
-		val sb = new StringBuilder();
-		
-		//TODO what transaction are we currently in, if any?
-		
-		sb
-		.append(", email.verified=")
-		.append(email.isVerified());
-		
-		return sb.toString();
+		return new StringBuilder()
+		.append("email.verified=")
+		.append(email.isVerified())
+		.toString();
 	}
 	
 }
