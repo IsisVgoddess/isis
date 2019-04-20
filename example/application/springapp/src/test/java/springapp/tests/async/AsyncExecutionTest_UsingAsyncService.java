@@ -51,8 +51,9 @@ class AsyncExecutionTest_UsingAsyncService {
 	@Test
 	void shouldAllowTaskCancellation() {
 
-		// we expect this to take no longer than ~250ms. (Each demo task sleeps 250ms.)
-		assertTimeout(ofMillis(300), () -> {
+		// we expect this to take no much longer than 50ms. 
+		// (Demo task sleeps 250ms, but gets cancelled after 50ms.)
+		assertTimeout(ofMillis(75), () -> {
 
 			val demoTask = new AsyncDemoTask();
 			val completable = asyncExecutionService.execute(demoTask); 
@@ -61,17 +62,17 @@ class AsyncExecutionTest_UsingAsyncService {
 			try {
 				completable.get(50, TimeUnit.MILLISECONDS);
 			} catch (TimeoutException e) {
-				// always thrown 
+				// always thrown in this scenario 
 			}
 
 			// cancel execution
+			completable.cancel(false);
+			
 			try {
-				completable.cancel(false);
+				completable.join(); 
 			} catch (CancellationException e) {
-				// always thrown
+				// always thrown in this scenario
 			}
-
-			completable.join();
 
 		});
 
