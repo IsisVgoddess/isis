@@ -126,7 +126,7 @@
 		<javassist.version>3.28.0-GA</javassist.version>
 		<javax-servlet.version>4.0.1</javax-servlet.version>
 		<jaxb-impl.version>2.3.6</jaxb-impl.version>
-		<jaxws-ri.version>2.3.5</jaxws-ri.version>
+		<jaxws-ri.version>3.0.2</jaxws-ri.version>
 
 		<jbcrypt.version>0.4</jbcrypt.version>
 		<jboss-jaxrs-api_2.0_spec.version>1.0.1.Final</jboss-jaxrs-api_2.0_spec.version>
