@@ -108,7 +108,7 @@
 		<datanucleus-jdo-query.version>6.0.0-m1</datanucleus-jdo-query.version>
 		<datanucleus-jodatime.version>6.0.0-m3</datanucleus-jodatime.version>
 		<datanucleus-maven-plugin.version>6.0.0-m1</datanucleus-maven-plugin.version>
-		<datanucleus-rdbms.version>6.0.0-m3</datanucleus-rdbms.version>
+		<datanucleus-rdbms.version>6.0.0-m5</datanucleus-rdbms.version>
 
 		<docx4j.version>11.3.2</docx4j.version>
 
